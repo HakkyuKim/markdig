@@ -13,6 +13,7 @@ using Markdig.Extensions.DefinitionLists;
 using Markdig.Extensions.Diagrams;
 using Markdig.Extensions.Emoji;
 using Markdig.Extensions.EmphasisExtras;
+using Markdig.Extensions.FencedCodeWrapper;
 using Markdig.Extensions.Figures;
 using Markdig.Extensions.Footers;
 using Markdig.Extensions.Footnotes;
@@ -35,6 +36,7 @@ using Markdig.Parsers.Inlines;
 using Markdig.Extensions.Globalization;
 using Markdig.Helpers;
 using Markdig.Extensions.ReferralLinks;
+using System.Net.NetworkInformation;
 
 namespace Markdig
 {
@@ -81,6 +83,7 @@ namespace Markdig
                 .UseCustomContainers()
                 .UseDefinitionLists()
                 .UseEmphasisExtras()
+                .UseFencedCodeWrapper()
                 .UseFigures()
                 .UseFooters()
                 .UseFootnotes()
@@ -510,6 +513,18 @@ namespace Markdig
         }
 
         /// <summary>
+        /// Wraps a div block around the fenced code block with the class name specifed as
+        /// the last word in the info string
+        /// </summary>
+        /// <param name="pipeline">The pipeline</param>
+        /// <returns>The modified pipeline</returns>
+        public static MarkdownPipelineBuilder UseFencedCodeWrapper(this MarkdownPipelineBuilder pipeline)
+        {
+            pipeline.Extensions.AddIfNotAlready<FencedCodeWrapperExtension>();
+            return pipeline;
+        }
+
+        /// <summary>
         /// This will disable the HTML support in the markdown processor (for constraint/safe parsing).
         /// </summary>
         /// <param name="pipeline">The pipeline.</param>
@@ -643,6 +658,9 @@ namespace Markdig
                         break;
                     case "globalization":
                         pipeline.UseGlobalization();
+                        break;
+                    case "fenced-code-wrapper":
+                        pipeline.UseFencedCodeWrapper();
                         break;
                     default:
                         throw new ArgumentException($"Invalid extension `{extension}` from `{extensions}`", nameof(extensions));

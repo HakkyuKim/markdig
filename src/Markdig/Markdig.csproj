@@ -1,6 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <PackageId>Markdig</PackageId>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\FencedCodeWrapper\" />
+  </ItemGroup>
   <Import Project="Markdig.targets" />
 </Project>
